@@ -61,6 +61,7 @@ TODO: make a shell script
 ```bash
 #!/bin/bash
 poetry update; \
+rm -rf requirements.txt; \
 poetry run python -c "import toml; print('\n'.join([f'{p[\"name\"]}=={p[\"version\"]}' for p in toml.load(open('poetry.lock'))['package']]))" > requirements.txt; \
 git add pyproject.toml poetry.lock requirements.txt; \
 git commit -m "Updated dependencies"; \

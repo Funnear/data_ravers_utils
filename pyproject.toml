@@ -16,7 +16,8 @@ dependencies = [
     "matplotlib (>=3.9.2)",
     "seaborn (>=0.13.2)",
     "matplotlib-venn (>=1.1.2)",
-    "toml (>=0.10.2,<0.11.0)"
+    "toml (>=0.10.2,<0.11.0)",
+    "pytest (>=8.3.5,<9.0.0)"
 ]
 package-mode = false
 
