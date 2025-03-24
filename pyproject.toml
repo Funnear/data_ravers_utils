@@ -15,9 +15,10 @@ dependencies = [
     "numpy (>=1.26.4)",
     "matplotlib (>=3.9.2)",
     "seaborn (>=0.13.2)",
-    "matplotlib-venn (>=1.1.2)"
+    "matplotlib-venn (>=1.1.2)",
+    "toml (>=0.10.2,<0.11.0)"
 ]
-
+package-mode = false
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
