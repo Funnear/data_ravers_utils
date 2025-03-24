@@ -6,9 +6,8 @@ import hashlib
 
 PROJECT_ROOT = os.path.abspath("..")
 PROJECT_NAME = os.path.basename(PROJECT_ROOT)
-DATASETS_PATH = f'{PROJECT_ROOT}/datasets'
 MODELS_PATH = f'{PROJECT_ROOT}/models'
-DF_PATH = f'{PROJECT_ROOT}/dataframes'
+DATA_PATH = f'{PROJECT_ROOT}/data'
 IMAGES_PATH = f'{PROJECT_ROOT}/images'
 GITIGNORE_PATH = f'{PROJECT_ROOT}/.gitignore'
 
@@ -70,10 +69,10 @@ def save_model_pickle(model, filename:str) -> None:
 
 
 def save_df_pickle(df: pd.DataFrame, filename:str):
-        df_file_path = f'{DF_PATH}/{filename}.pkl'
+        df_file_path = f'{DATA_PATH}/{filename}.pkl'
         df.to_pickle(df_file_path)
         logging.info(f"Backup file is created: {df_file_path}")
 
 def read_df_pickle(local_path) -> pd.DataFrame:
-    df_file_path = f'{PROJECT_ROOT}/{local_path}'
+    df_file_path = f'{DATA_PATH}/{local_path}.pkl'
     return pd.read_pickle(df_file_path)
