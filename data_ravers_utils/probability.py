@@ -1,9 +1,5 @@
 import math
 
-# to test the import
-def hello():
-    print("hello")
-
 class OneDimensionalSet:
     def __init__(self,  item_type: str):
         self.item_type = item_type
