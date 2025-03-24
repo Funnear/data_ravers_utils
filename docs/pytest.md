@@ -14,7 +14,7 @@ pytest tests/
 ```
 
 ``bash
-pytest tests/test_file_handler.py
+pytest tests/test_probability.py
 ```
 
 # Add new tests
