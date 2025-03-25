@@ -8,7 +8,7 @@ def get_numerical_columns(df: pd.DataFrame) -> list:
 def get_categorical_columns(df: pd.DataFrame) -> list:
     return df.select_dtypes(exclude="number").columns.tolist()
 
-def unique_values(df: pd.DataFrame, columns: list = None) -> dict:
+def unique_values_count(df: pd.DataFrame, columns: list = None) -> dict:
     result = dict()
     if not columns:
         # for entire dataset
@@ -19,6 +19,9 @@ def unique_values(df: pd.DataFrame, columns: list = None) -> dict:
         result[col] = df[col].nunique()
             
     return result
+
+def unique_values_list(df: pd.DataFrame, column: str) -> list:            
+    return df[column].unique()
 
 def count_rows(df: pd.DataFrame):
     return df.shape[0]
@@ -42,7 +45,7 @@ def print_eda_report(df: pd.DataFrame):
     print()
 
     print(f"Dataset has numerical data in columns: {numerical_columns}")
-    numerical_dict = unique_values(df, columns=numerical_columns)
+    numerical_dict = unique_values_count(df, columns=numerical_columns)
     
     # sorting dictionary by values descending
     # lambda function for bonus points!
@@ -51,7 +54,7 @@ def print_eda_report(df: pd.DataFrame):
     for key, value in numerical_dict.items():
         print(f'- Column "{key}" has {value} unique values.')
         if value <= 20:
-            print(f"   -- Unique values are:\n {df[key].unique()}")
+            print(f"  -- Unique values are:\n {unique_values_list(df, key)}")
 
     print()
     
@@ -60,12 +63,12 @@ def print_eda_report(df: pd.DataFrame):
 
     # TODO: code duplication
     print(f"Dataset has categorical data in columns: {categorical_columns}")
-    categorical_dict = unique_values(df, columns=categorical_columns)
+    categorical_dict = unique_values_count(df, columns=categorical_columns)
 
     for key, value in categorical_dict.items():
         print(f'- Column "{key}" has {value} unique values.')
         if value <= 20:
-            print(f"  -- Unique values are:\n {df[key].unique()}")
+            print(f"  -- Unique values are:\n {unique_values_list(df, key)}")
 
     print()
 
@@ -104,3 +107,12 @@ def count_nulls(df: pd.DataFrame) -> pd.DataFrame:
     df_nulls["na_percent_pretty"] = df_nulls["na_percent"].map("{:.2f}%".format)
     df_nulls.sort_values(by=["na_percent", "is_na"], ascending=[False, False], inplace=True)
     return df_nulls
+
+def drop_columns_by_treshold(df: pd.DataFrame, treshold: float = 0.5):
+    logging.info(f"Number of columns before cleanup: {count_cols(df)}")
+    df_nulls = count_nulls(df)
+    columns_to_drop = df_nulls[df_nulls["na_percent"] > treshold].index.tolist()
+    logging.info(f'Dropping {len(columns_to_drop)} empty columns: {columns_to_drop}')
+    df.drop(columns=columns_to_drop, inplace=True)
+    logging.info(f"Number of columns after cleanup: {count_cols(df)}")
+    return
