@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.metrics import ConfusionMatrixDisplay
 import logging
 import functools
 import math
@@ -72,7 +73,7 @@ def plots_for_numeric_columns(df: pd.DataFrame, columns: list, plot_type: PlotTy
             case PlotType.SCATTER:
                 if TARGET_COLUMN not in df.columns:
                     raise ValueError("Scatter plot requires a '{TARGET_COLUMN}' column in the DataFrame.")
-                sns.scatterplot(x=df[col], y=df["price"], ax=axes[i], color=COLORS[i])
+                sns.scatterplot(x=df[col], y=df[TARGET_COLUMN], ax=axes[i], color=COLORS[i])
             case _:
                 raise ValueError(f"Unsupported plot type: {plot_type}")
             
@@ -84,4 +85,31 @@ def plots_for_numeric_columns(df: pd.DataFrame, columns: list, plot_type: PlotTy
     fig.suptitle(plot_title, fontsize=14, fontweight='bold')
 
     plt.tight_layout()
+    plt.show()
+
+
+@manage_logging(logging.INFO)  # Apply decorator to reset logging level
+def confusion_matrix(conf_matrix):
+    disp = ConfusionMatrixDisplay(confusion_matrix=conf_matrix)
+    plt.figure(figsize=(8, 6))
+    disp.plot(cmap='plasma')  
+    plt.grid(True)
+    plt.show()
+
+
+def plot_bar_feature_importance(importances, indices, feature_list):
+    plt.figure(figsize=(10, 8))
+    plt.title("Feature Importances")
+
+    # Prepare data
+    importance_values = importances[indices]
+    feature_labels = [feature_list[i] for i in indices]
+    
+    # Plot horizontal bars
+    plt.barh(range(len(importance_values)), importance_values, color="#c9a0dc", align="center")
+    plt.yticks(range(len(importance_values)), feature_labels)
+    plt.xlabel("Importance")
+    plt.ylabel("Features")
+    plt.tight_layout()
+    plt.gca().invert_yaxis()  # Most important feature at the top
     plt.show()

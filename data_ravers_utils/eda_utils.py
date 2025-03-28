@@ -116,3 +116,12 @@ def drop_columns_by_treshold(df: pd.DataFrame, treshold: float = 0.5):
     df.drop(columns=columns_to_drop, inplace=True)
     logging.info(f"Number of columns after cleanup: {count_cols(df)}")
     return
+
+def get_frequency_table(df, column):
+    """
+    Returns a sorted frequency table for a given column in descending order.
+    """
+    freq_table = df[column].value_counts(dropna=False).reset_index()
+    freq_table.columns = [column, "count"]
+    freq_table = freq_table.sort_values(by="count", ascending=False).reset_index(drop=True)
+    return freq_table

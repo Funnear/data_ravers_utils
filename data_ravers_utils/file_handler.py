@@ -67,6 +67,21 @@ def save_model_pickle(model, filename:str) -> None:
                 g.write(f"\n{relative_path}")
             logging.info(f"Added to .gitignore: {relative_path}")
 
+def read_model_pickle(local_path) -> object:
+    """
+    To read model from a file run this in notebook cell:
+    read_model_pickle(local_path='your_file_name_no_extension')
+    # Example:
+    read_model_pickle(local_path='final_linear_regression_model')
+    """
+    model_file_path = f'{MODELS_PATH}/{local_path}.pkl'
+    
+    if os.path.exists(model_file_path):
+        with open(model_file_path, "rb") as f:
+            return pickle.load(f)
+    else:
+        logging.error(f"Model file not found: {model_file_path}")
+        return None
 
 def save_df_pickle(df: pd.DataFrame, filename:str):
         df_file_path = f'{DATA_PATH}/{filename}.pkl'
