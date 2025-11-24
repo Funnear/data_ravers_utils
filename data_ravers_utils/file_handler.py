@@ -91,3 +91,17 @@ def save_df_pickle(df: pd.DataFrame, filename:str):
 def read_df_pickle(local_path) -> pd.DataFrame:
     df_file_path = f'{DATA_PATH}/{local_path}.pkl'
     return pd.read_pickle(df_file_path)
+
+def save_df_as_csv(df: pd.DataFrame, filename: str):
+    """
+    Save DataFrame as CSV into project's DATA_PATH folder.
+    Keeps consistent naming and logging style.
+    """
+    csv_path = f'{DATA_PATH}/{filename}.csv'
+
+    try:
+        df.to_csv(csv_path, index=False)
+        logging.info(f"CSV file created: {csv_path}")
+    except Exception as e:
+        logging.error(f"Failed to save CSV file: {csv_path}. Error: {e}")
+
